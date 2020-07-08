@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header" />
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+	window.onload = function() {
+		getValue();
+	};
+
+	$(document).ready(function() {
+		setInterval(function() {
+
+			getValue();
+
+		}, 3000);
+	});
+
+	function getValue() {
+		$(document).ready(function() {
+			$.ajax({
+				url : "/api/currenttraffic"
+			}).then(function(data) {
+				$('#count_span').text(data.count);
+				$('#date_span').text(data.date);
+			});
+		});
+	}
+
+	$(document).ready(function() {
+
+		$('#addButton').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/enter',
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#reduceButton').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/exit',
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+	});
+</script>
+
+<body roleId="page-top" data-spy="scroll"
+	data-target=".navbar-fixed-top">
+<head th:replace="common/header :: navbar" />
+<div class="container main">
+
+	<div class="row">
+		<div class="col-xs-8 col-xs-offset-2">
+			<div class="alert alert-success text-center" role="alert">
+				<h1 class="count-total">
+					<span id="count_span"></span>
+				</h1>
+				Live Head Count (<span id="date_span"></span>)
+			</div>
+		</div>
+	</div>
+
+	<div th:if="${user != null}" class="row">
+		<div class="col-sm-5 col-sm-offset-1 data-entry-col">
+			<button id="addButton"
+				class="btn btn-lg btn-success btn-lg
+					btn-block" type="submit">
+				<h1>
+					<i class="fa fa-plus-square"></i> In
+				</h1>
+			</button>
+
+		</div>
+		<div class="col-sm-5 data-entry-col">
+			<button id="reduceButton"
+				class="btn btn-lg btn-danger  btn-lg btn-block" type="submit">
+				<h1>
+					<i class="fa fa-minus-square"></i> Out
+				</h1>
+			</button>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div th:replace="common/header :: body-bottom-scripts" />
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:fragment="common-header">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="" />
+<meta name="author" content="" />
+<title>Oklahoma State University Library - Door Traffic Count System</title>
+<!-- Bootstrap Core CSS -->
+<link href="/css/bootstrap.min.css" rel="stylesheet" />
+
+<!-- Website Font style -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
+
+<!-- Google Fonts -->
+<link href='https://fonts.googleapis.com/css?family=Passion+One'
+	rel='stylesheet' type='text/css' />
+<link href='https://fonts.googleapis.com/css?family=Oxygen'
+	rel='stylesheet' type='text/css' />
+
+<!--bootstrap date-time picker-->
+<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+<!--data table-->
+<link href="/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+
+<!-- Custom CSS -->
+<!--<link href="css/scrolling-nav.css" rel="stylesheet" />-->
+<link href="/css/main.css" rel="stylesheet" />
+
+<!-- Latest compiled and minified CSS -->
+<link rel=“stylesheet”
+	href=“https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css”
+	type=“text/css”>
+
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+ integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+ -->
+<!-- FontAwesome CSS -->
+<link rel=“stylesheet”
+	href=“https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css”>
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn’t work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		<script src=“https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js”></script>
+		<script src=“https://oss.maxcdn.com/respond/1.4.2/respond.min.js”></script>
+	<![endif]-->
+
+<script>
+ setTimeout(function(){
+    document.getElementById('aap').className = 'waa';
+ }, 2500);
+</script> 
+</head>
+<body>
+	<!-- Navigation -->
+
+	<div th:fragment="navbar">
+
+		<nav class="navbar navbar-inverse" role="navigation">
+			<div class="container">
+				<div class="navbar-header page-scroll">
+					<button type="button" class="navbar-toggle" data-toggle="collapse"
+						data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand page-scroll" th:href="@{/index}">Home</a>
+				</div>
+
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse  navbar-collapse navbar-ex1-collapse">
+					<ul class="nav navbar-nav">
+						<!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+						<li class="hidden"><a class="page-scroll" href="#page-top"></a>
+						</li>
+
+						<li th:if="${user != null && user.roleId == 1}" class="dropdown"><a
+							href="#" class="dropdown-toggle" data-toggle="dropdown"
+							role="button" aria-haspopup="true" aria-expanded="false">Administrator
+								<span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/user/adduser}">Add User</a></li>
+								<li><a th:href="@{/user/users}">User List</a></li>
+								<li><a th:href="@{/headcount/reset}">Reset</a></li>
+								<li><a th:href="@{/headcount/stat}">Statistics</a></li>
+								<li><a th:href="@{/headcount/bargraph}">Statistics Bar-Graph</a></li>
+							</ul></li>
+
+					</ul>
+
+					<ul th:if="${user != null}" class="nav navbar-nav navbar-right">
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown" role="button" aria-haspopup="true"
+							aria-expanded="false"><i class="fa fa-user-cog"></i> <span
+								th:text="${user.roleId} == 1 ? ${user.firstName} + ' (Admin)' : ${user.firstName} + ' (User)' "></span>
+								<span class="caret" /></span></a>
+							<ul class="dropdown-menu">
+								<li><a th:href="@{/user/profile}">Profile</a></li>
+								<li role="separator" class="divider"></li>
+								<li><a th:href="@{/logout}">Logout</a></li>
+							</ul></li>
+					</ul>
+
+					<ul th:if="${user == null}" class="nav navbar-nav navbar-right">
+						<li><a th:href="@{/login}">Login</a></li>
+					</ul>
+
+
+				</div>
+				<!-- /.navbar-collapse -->
+			</div>
+			<!-- /.container -->
+		</nav>
+
+		<div id="aap" class="p-3 mb-2 bg-success text-white"
+			th:if="${errorMessage}">
+			<h1 class="text-center" th:text="${errorMessage}"></h1>
+		</div>
+	</div>
+
+
+
+	<div th:fragment="body-bottom-scripts">
+		<!-- jQuery -->
+		<script src="/js/jquery.js"></script>
+
+		<!-- Bootstrap Core JavaScript -->
+		<script src="/js/bootstrap.min.js"></script>
+
+		<script src="/js/jquery.easing.min.js"></script>
+
+		<!--bootstrap date-time picker-->
+		<script src="/js/bootstrap-datetimepicker.min.js"></script>
+
+		<!--bootbox-->
+		<script src="/js/bootbox.min.js"></script>
+
+		<!--data table-->
+		<script src="/js/jquery.dataTables.min.js"></script>
+		<script src="/js/dataTables.bootstrap.min.js"></script>
+
+		<!--main js-->
+		<script src="/js/main.js"></script>
+	</div>
+
+</body>
+</html>
