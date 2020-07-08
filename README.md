@@ -2,7 +2,7 @@
 
 Spring Boot/Spring Data/Spring Security/Hibernate/MySQL/REST
 
-The project simulates manual people counting online system. It allows to register/login, modification of counting, reset the count, static.
+The project simulates manual people counting online system. It allows to register/login users, modification of counting, reset the count, statistics.
 
 There are two roles user and admin.
 
@@ -48,7 +48,7 @@ mvn clean spring-boot:run
 
 ### Dashboard Page   
 
-![Statistics Graph  page](image/statistics_graph_page.png "Statistics Graph Page")
+![Statistics Graph  page](images/statistics_graph_page.png "Statistics Graph Page")
 
 ###### Build application
 ```
@@ -60,4 +60,4 @@ mvn clean build
 java -jar target/door-traffic-counter-app-0.0.1
 ```
 
-check the URL "http://localhost:8080"
+Check the URL "http://localhost:8080".
