@@ -2,11 +2,11 @@
 
 Spring Boot/Spring Data/Spring Security/Hibernate/MySQL/REST
 
-The project simulates manual people counting online system. It allows to register/login users, modification of counting, reset the count, statistics.
+The project simulates manual people counting online system. It allows to register/login users, modification of counting, reset the count, and statistics.
 
-There are two roles user and admin.
+There are two tyeps of roles user and admin.
 
-## Thing to run the application
+## Things to run the application.
 
 __Clone the repository__
 ```
@@ -18,9 +18,7 @@ __Go the folder__
 src/main/resources/sql and run the "make_database.sql" sql in Mysql DBMS.
 ```
 
-There are two roles user and admin. 
-
-The admin username and password are "admin". After setup user can change his password.
+The admin username and password are "admin". After setup the system user can change his/her password.
 
 __Set Your MySQL username & password in application.properties__
 
@@ -31,7 +29,7 @@ __Run the application__
 mvn clean spring-boot:run
 ```
 
-## Screen shot 
+## Screen shots.
 
 ### Index Page
 
@@ -49,6 +47,8 @@ mvn clean spring-boot:run
 ### Dashboard Page   
 
 ![Statistics Graph  page](images/statistics_graph_page.png "Statistics Graph Page")
+
+## Build application and run on a live environment.
 
 ###### Build application
 ```
