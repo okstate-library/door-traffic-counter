@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
 <head th:replace="common/header :: common-header" />
 <script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script>
 	window.onload = function() {
 		getValue();
@@ -33,6 +33,48 @@
 			$.ajax({
 				type : 'POST',
 				url : '/headcount/enter',
+				data : {
+					count : "1"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#addButton2').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/enter',
+				data : {
+					count : "2"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#addButton5').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/enter',
+				data : {
+					count : "5"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#addButton10').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/enter',
+				data : {
+					count : "10"
+				},
 				success : function(result) {
 					getValue();
 				}
@@ -43,6 +85,48 @@
 			$.ajax({
 				type : 'POST',
 				url : '/headcount/exit',
+				data : {
+					count : "1"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#reduceButton2').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/exit',
+				data : {
+					count : "2"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#reduceButton5').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/exit',
+				data : {
+					count : "5"
+				},
+				success : function(result) {
+					getValue();
+				}
+			});
+		});
+
+		$('#reduceButton10').click(function() {
+			$.ajax({
+				type : 'POST',
+				url : '/headcount/exit',
+				data : {
+					count : "10"
+				},
 				success : function(result) {
 					getValue();
 				}
@@ -55,8 +139,8 @@
 <body roleId="page-top" data-spy="scroll"
 	data-target=".navbar-fixed-top">
 <head th:replace="common/header :: navbar" />
-<div class="container main">
 
+<div class="container main">
 	<div class="row">
 		<div class="col-xs-8 col-xs-offset-2">
 			<div class="alert alert-success text-center" role="alert">
@@ -68,26 +152,89 @@
 		</div>
 	</div>
 
+
 	<div th:if="${user != null}" class="row">
-		<div class="col-sm-5 col-sm-offset-1 data-entry-col">
-			<button id="addButton"
-				class="btn btn-lg btn-success btn-lg
-					btn-block" type="submit">
-				<h1>
-					<i class="fa fa-plus-square"></i> In
-				</h1>
-			</button>
 
-		</div>
-		<div class="col-sm-5 data-entry-col">
-			<button id="reduceButton"
-				class="btn btn-lg btn-danger  btn-lg btn-block" type="submit">
-				<h1>
-					<i class="fa fa-minus-square"></i> Out
-				</h1>
-			</button>
+		<div class="col-md-6 data-entry-col">
 
+			<div class="row">
+				<div class="col-md-12">
+					<button id="addButton"
+						class="btn btn-lg btn-success btn-block btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-plus-square"></i> In
+						</h1>
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<button id="addButton2"
+						class="btn btn-lg btn-success btn-block  btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-plus-square"></i> 2
+						</h1>
+					</button>
+				</div>
+				<div class="col-md-4">
+					<button id="addButton5"
+						class="btn btn-lg btn-success btn-block  btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-plus-square"></i> 5
+						</h1>
+					</button>
+				</div>
+				<div class="col-md-4">
+					<button id="addButton10"
+						class="btn btn-lg btn-success btn-block  btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-plus-square"></i> 10
+						</h1>
+					</button>
+				</div>
+			</div>
 		</div>
+
+
+		<div class="col-md-6 data-entry-col">
+			<div class="row">
+				<div class="col-md-12">
+					<button id="reduceButton"
+						class="btn btn-lg btn-danger btn-block btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-minus-square"></i> Out
+						</h1>
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<button id="reduceButton2"
+						class="btn btn-lg btn-danger  btn-block btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-minus-square"></i> 2
+						</h1>
+					</button>
+				</div>
+				<div class="col-md-4">
+					<button id="reduceButton5"
+						class="btn btn-lg btn-danger btn-block btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-minus-square"></i> 5
+						</h1>
+					</button>
+				</div>
+				<div class="col-md-4">
+					<button id="reduceButton10"
+						class="btn btn-lg btn-danger btn-block btn-m-b" type="submit">
+						<h1>
+							<i class="fa fa-minus-square"></i> 10
+						</h1>
+					</button>
+				</div>
+			</div>
+		</div>
+
 	</div>
 
 </div>

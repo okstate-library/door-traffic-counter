@@ -13,12 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Request filter
+ * @author library-mac
+ *
  */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestFilter implements Filter {
 
+	
+    /**
+     * do Filter method of request filter. 
+     */
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
@@ -46,9 +51,15 @@ public class RequestFilter implements Filter {
 
     }
 
+    /**
+     * Init method of Request filter.
+     */
     public void init(FilterConfig filterConfig) {
     }
 
+    /**
+     * Destroy method of Request filter.
+     */
     public void destroy() {
     }
 

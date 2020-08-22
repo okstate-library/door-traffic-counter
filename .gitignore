@@ -35,5 +35,8 @@ hs_err_pid*
 .springBeans
 .sts4-cache
 .DS_Store
+.jks
 
 .mvn/*
+src/.DS_Store
+src/main/resources/.DS_Store

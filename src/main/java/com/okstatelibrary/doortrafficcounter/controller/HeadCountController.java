@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.okstatelibrary.doortrafficcounter.entity.HeadCountStat;
 import com.okstatelibrary.doortrafficcounter.entity.User;
@@ -44,6 +45,15 @@ public class HeadCountController {
 	@Autowired
 	private HeadCountService headCountService;
 
+	/**
+	 * Staticics
+	 * 
+	 * @param dateString
+	 * @param model
+	 * @param principal
+	 * @return
+	 * @throws ParseException
+	 */
 	@RequestMapping("/stat")
 	public String stat(@ModelAttribute("dateString") String dateString, Model model, Principal principal)
 			throws ParseException {
@@ -83,21 +93,21 @@ public class HeadCountController {
 	}
 
 	@RequestMapping(value = "/enter", method = RequestMethod.POST)
-	public String enterconut(Principal principal) throws Exception {
+	public String enterconut(@RequestParam("count") Integer count, Principal principal) throws Exception {
 
 		User user = userService.findByUsername(principal.getName());
 
-		modifyCount(true, user.getUserId());
+		modifyCount(true, count, user.getUserId());
 
 		return "redirect:/index";
 	}
 
 	@RequestMapping(value = "/exit", method = RequestMethod.POST)
-	public String exitcount(Principal principal) throws Exception {
+	public String exitcount(@RequestParam("count") Integer count, Principal principal) throws Exception {
 
 		User user = userService.findByUsername(principal.getName());
 
-		modifyCount(false, user.getUserId());
+		modifyCount(false, count, user.getUserId());
 
 		return "redirect:/index";
 	}
@@ -254,7 +264,7 @@ public class HeadCountController {
 	}
 
 	private void setupTotalCount(List<HeadCountStat> statList, Model model) {
-		
+
 		Long entryCount = statList.stream().filter(s -> s.isEntry()).count();
 		Long exitCount = statList.stream().filter(s -> !s.isReset() && !s.isEntry()).count();
 
@@ -262,19 +272,19 @@ public class HeadCountController {
 		model.addAttribute("exitCount", exitCount);
 	}
 
-	private void modifyCount(boolean isEntrance, Long userId) {
+	private void modifyCount(boolean isEntrance, Integer count, Long userId) {
 
 		Integer liveCount = headCountService.getCount(DateUtil.getTodayDate());
 
-		HeadCountStat headCountStat = new HeadCountStat(DateUtil.getTodayDate(), false, isEntrance, liveCount, 1,
+		HeadCountStat headCountStat = new HeadCountStat(DateUtil.getTodayDate(), false, isEntrance, liveCount, count,
 				userId);
 
 		headCountStatService.createHeadCountStat(headCountStat);
 
 		if (isEntrance) {
-			headCountService.Increment(DateUtil.getTodayDate(), 1);
+			headCountService.Increment(DateUtil.getTodayDate(), count);
 		} else {
-			headCountService.Decrement(DateUtil.getTodayDate(), 1);
+			headCountService.Decrement(DateUtil.getTodayDate(), count);
 		}
 	}
 }
