@@ -4,7 +4,7 @@ Spring Boot/Spring Data/Spring Security/Hibernate/MySQL/REST
 
 The project simulates manual people counting online system. It allows to register/login users, modification of counting, reset the count, and statistics.
 
-There are two tyeps of roles user and admin.
+There are two types of roles user and administrator.
 
 ## Things to run the application.
 
@@ -15,14 +15,14 @@ git clone https://github.com/okstate-library/door-traffic-counter.git
 
 __Go the folder__
 ```
-src/main/resources/sql and run the "make_database.sql" sql in Mysql DBMS.
+src/main/resources/sql and run the "make_database.sql" SQL in MySql DBMS.
 ```
 
-The admin username and password are "admin". After setup the system user can change his/her password.
+The administrator user name and password are "admin". After setup the system user can change his/her password.
 
-__Set Your MySQL username & password in application.properties__
+__Set Your MySQL user name & password in application.properties__
 
-Change the server, usernmae and password on [application.properties](../../blob/master/src/main/resources/application.properties)
+Change the server, user name and password on [application.properties](../../blob/master/src/main/resources/application.properties)
 
 __Run the application__
 ```

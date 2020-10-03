@@ -54,3 +54,6 @@ INSERT INTO `user`
 VALUES
 ('1','Lennon','Steven','lstevens@okstate.edu','admin','$2a$12$0nyne1/4.1.28ILaR9CqBuf0Uj.zne2Xr.OkQDd3XPW0OKbkKqrX6',1,0,1);
 
+-- Adding unique to the date column in head_count table. 
+ALTER TABLE `headcountdb`.`head_count`;
+ALTER TABLE `headcountdb`.`head_count` ALTER INDEX `date_UNIQUE` VISIBLE;

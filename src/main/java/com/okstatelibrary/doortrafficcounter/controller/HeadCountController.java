@@ -198,6 +198,7 @@ public class HeadCountController {
 					initialLiveCountGot = true;
 				}
 
+				@SuppressWarnings("deprecation")
 				Integer key = headCountStat.getDate().getHours();
 				Integer count = headCountStat.getCount();
 
