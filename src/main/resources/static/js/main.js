@@ -31,7 +31,7 @@ $(document).ready(function () {
     $('#datetimepicker4').datetimepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
-        startDate: '-1m',
+        startDate: new Date('2020-07-06'),
         endDate: end,
         minView: 2, 
         pickTime: false, 
