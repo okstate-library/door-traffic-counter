@@ -43,8 +43,7 @@ mvn clean spring-boot:run
 
 ![Statistics page](images/statistics_page.png "Statistics Page")
 
-
-### Dashboard Page   
+### Statistics Graph Page   
 
 ![Statistics Graph  page](images/statistics_graph_page.png "Statistics Graph Page")
 
@@ -61,3 +60,7 @@ java -jar target/door-traffic-counter-app-0.0.1
 ```
 
 Check the URL "http://localhost:8080".
+
+###### External API
+
+Check the API "http://localhost:8080/api/currenttraffic" returns (Json Object)-  {"count":311,"date":"2020-07-08"}
