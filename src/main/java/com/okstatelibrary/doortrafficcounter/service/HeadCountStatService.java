@@ -11,4 +11,9 @@ public interface HeadCountStatService {
 
 	HeadCountStat createHeadCountStat(HeadCountStat headCountStat);
 
+	Integer findAllCount(Date startDate, Date endDate);
+	
+	List<HeadCountStat> findAll(Date startDate, Date endDate);
+	
+	void deleteAll(Date startDate, Date endDate);
 }

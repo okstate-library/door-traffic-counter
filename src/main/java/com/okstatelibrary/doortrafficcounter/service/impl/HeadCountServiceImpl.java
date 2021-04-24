@@ -1,6 +1,7 @@
-package com.okstatelibrary.doortrafficcounter.service.UserServiceImpl;
+package com.okstatelibrary.doortrafficcounter.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,6 +90,16 @@ public class HeadCountServiceImpl implements HeadCountService {
 
 	private void initGetCount() {
 		// headCount = -1;
+	}
+
+	@Override
+	public Integer findAllCount(Date startDate, Date endDate) {
+		return headCountDao.findCountByDates(startDate, endDate);
+	}
+
+	@Override
+	public List<HeadCount> findAll(Date startDate, Date endDate) {
+		return headCountDao.findByDates(startDate, endDate);
 	}
 
 }

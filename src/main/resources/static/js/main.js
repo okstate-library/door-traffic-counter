@@ -38,6 +38,20 @@ $(document).ready(function () {
         language: 'pt-BR' 
     });
     
+    $('#datetimepicker5').datetimepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        startDate: new Date('2020-07-06'),
+        endDate: end,
+        minView: 2, 
+        pickTime: false, 
+        language: 'pt-BR'
+    });
+    
+    $('#helpButton').click(function(){
+    	 $("#exampleModal").modal();
+    }); 
+    
 });
 
 

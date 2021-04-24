@@ -355,3 +355,16 @@ div.waa {
 .btn-m-b{
 	margin-bottom: 2rem;
 }
+
+.space { margin:0; padding:0; height:50px; } // height as desired
+
+
+div.show {
+	opacity: 1;
+	transition: opacity 500ms;
+	backgroud: green;
+}
+
+div.hide {
+	opacity: 0;
+}

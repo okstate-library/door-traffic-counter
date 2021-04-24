@@ -8,6 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,10 +35,13 @@ import com.okstatelibrary.doortrafficcounter.util.StatDataModel;
 
 import java.io.ByteArrayInputStream;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 
 @Controller
 @RequestMapping("/headcount")
 public class HeadCountController {
+
+	private String message = "";
 
 	@Autowired
 	private UserService userService;
@@ -77,6 +84,92 @@ public class HeadCountController {
 		model.addAttribute("user", user);
 
 		return "reset";
+	}
+
+	@RequestMapping(value = "/semreset", method = RequestMethod.GET)
+	public String semreset(Model model, Principal principal) {
+		User user = userService.findByUsername(principal.getName());
+		model.addAttribute("user", user);
+
+		messageSetup(model);
+
+		return "semreset";
+	}
+
+	@RequestMapping(value = "/semreset", method = RequestMethod.POST)
+	public String semresetPost(@ModelAttribute("startDateString") String startDateString,
+			@ModelAttribute("endDateString") String endDateString, Model model, Principal principal,
+			HttpServletRequest request) throws Exception {
+
+		User user = userService.findByUsername(principal.getName());
+		model.addAttribute("user", user);
+
+		Date startDate = java.sql.Date.valueOf(startDateString);
+		Date endDate = DateUtil.getLongDate(endDateString);
+
+		int count = headCountStatService.findAllCount(startDate, endDate);
+
+		model.addAttribute("recordcount", count);
+
+		HttpSession session = request.getSession();
+		session.setAttribute("startDate", startDateString);
+		session.setAttribute("endDate", endDateString);
+
+		return "semreset";
+	}
+
+	@PostMapping("/downloadtraffic")
+	public ResponseEntity<Object> downloadreports(HttpServletRequest request, @RequestParam String action)
+			throws IOException {
+
+		try {
+
+			HttpSession session = request.getSession();
+
+			String startDateString = (String) session.getAttribute("startDate");
+			String endDateString = (String) session.getAttribute("endDate");
+
+			Date startDate = java.sql.Date.valueOf(startDateString);
+			Date endDate = DateUtil.getLongDate(endDateString);
+
+			List<HeadCountStat> list = headCountStatService.findAll(startDate, endDate);
+
+			ByteArrayInputStream in = ExcelGenerator.statDataToExcel(list);
+
+			HttpHeaders headers = new HttpHeaders();
+
+			headers.add("Content-Disposition",
+					"attachment; filename=" + startDateString + "_" + endDateString + "_trafficcount.xlsx");
+
+			return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
+
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN)
+					.body("Number of records cannot handle to the server. Shorten the period of time and try again.");
+		}
+
+	}
+
+	@PostMapping("/deletetraffic")
+	public String deletetraffic(HttpServletRequest request, @RequestParam String action) throws IOException {
+
+		HttpSession session = request.getSession();
+
+		String startDateString = (String) session.getAttribute("startDate");
+		String endDateString = (String) session.getAttribute("endDate");
+
+		Date startDate = java.sql.Date.valueOf(startDateString);
+		Date endDate = DateUtil.getLongDate(endDateString);
+
+		System.out.println("startDate" + startDate);
+		System.out.println("endDate" + endDate);
+
+		headCountStatService.deleteAll(startDate, endDate);
+
+		message = "Records deleted from system successfully!";
+
+		return "redirect:/headcount/semreset";
+
 	}
 
 	@RequestMapping(value = "/resetcount", method = RequestMethod.POST)
@@ -286,6 +379,15 @@ public class HeadCountController {
 			headCountService.Increment(DateUtil.getTodayDate(), count);
 		} else {
 			headCountService.Decrement(DateUtil.getTodayDate(), count);
+		}
+	}
+
+	private void messageSetup(Model model) {
+		if (!message.equals(null) || !message.equals("")) {
+
+			model.addAttribute("errorMessage", message);
+
+			message = "";
 		}
 	}
 }

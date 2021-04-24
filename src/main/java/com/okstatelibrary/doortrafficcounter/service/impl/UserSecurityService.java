@@ -1,4 +1,4 @@
-package com.okstatelibrary.doortrafficcounter.service.UserServiceImpl;
+package com.okstatelibrary.doortrafficcounter.service.impl;
 
 import com.okstatelibrary.doortrafficcounter.entity.User;
 import com.okstatelibrary.doortrafficcounter.repository.UserDao;
@@ -12,9 +12,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserSecurityServiceImpl implements UserDetailsService {
+public class UserSecurityService implements UserDetailsService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserSecurityServiceImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserSecurityService.class);
 
     @Autowired
     private UserDao userDao;
@@ -22,11 +22,10 @@ public class UserSecurityServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
-        if (null == user) {
+        if (null == user || user.isDeleted()) {
             LOG.warn("Username {} not found", username);
             throw new UsernameNotFoundException("Username " + username + " not found");
         }
         return user;
     }
 }
-

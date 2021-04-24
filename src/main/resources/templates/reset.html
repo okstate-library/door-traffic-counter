@@ -6,12 +6,37 @@
 <head th:replace="common/header :: navbar" />
 <div class="container">
 
-<div class="row">
+	<div class="row">
 		<div class="col-lg-12">
-			<h1 class="page-header">Reset Head Count</h1>
+			<h1 class="page-header">
+				Reset Head Count
+				<button type="button" class="btn btn-info" data-bs-toggle="modal"
+					id="helpButton" data-bs-target="#exampleModal">?</button>
+			</h1>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLabel">Reset Head
+							Count-Help</h3>
+					</div>
+					<div class="modal-body">
+
+						<ul>
+							<li>If the current count is not zero and you need to start
+								it from zero click the following button and proceed.</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-md-6">
 			<form th:action="@{/headcount/resetcount}" method="post">

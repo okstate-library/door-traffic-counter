@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.okstatelibrary.doortrafficcounter.service.UserServiceImpl.UserSecurityService;
+import com.okstatelibrary.doortrafficcounter.service.impl.UserSecurityService;
 
 import java.security.SecureRandom;
 

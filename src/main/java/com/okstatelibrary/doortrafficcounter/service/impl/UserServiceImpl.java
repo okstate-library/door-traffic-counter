@@ -1,4 +1,4 @@
-package com.okstatelibrary.doortrafficcounter.service.UserServiceImpl;
+package com.okstatelibrary.doortrafficcounter.service.impl;
 
 import com.okstatelibrary.doortrafficcounter.entity.User;
 import com.okstatelibrary.doortrafficcounter.repository.UserDao;

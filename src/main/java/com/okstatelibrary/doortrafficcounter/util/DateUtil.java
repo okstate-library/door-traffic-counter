@@ -9,7 +9,8 @@ import java.util.Date;
 public class DateUtil {
 
 	private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+	private static SimpleDateFormat longDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
 	public static Date getTodayDate() {
 		long millis = System.currentTimeMillis();
 
@@ -49,8 +50,18 @@ public class DateUtil {
 
 	}
 
-
 	public static int compareDates(Date date1) {
 		return dateFormat.format(date1).compareTo(dateFormat.format(getTodayDate()));
 	}
+	
+	public static Date getLongDate(String date) {
+		try {
+			return longDateFormat.parse(date + " 23:59:59");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }

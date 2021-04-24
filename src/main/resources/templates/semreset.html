@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head th:replace="common/header :: common-header" />
+<body roleId="page-top" data-spy="scroll"
+	data-target=".navbar-fixed-top">
+<head th:replace="common/header :: navbar" />
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-lg-12">
+			<h1 class="page-header">
+				Semester Reset
+				<button type="button" class="btn btn-info" data-bs-toggle="modal"
+					id="helpButton" data-bs-target="#exampleModal">?</button>
+			</h1>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h3 class="modal-title" id="exampleModalLabel">Semester
+							Reset-Help</h3>
+					</div>
+					<div class="modal-body">
+
+						<ul>
+							<li>In order to download the records as an Excel file, use
+								the following screen to proceed.</li>
+
+							<li>After you download data, please delete it from the
+								database to improve performance at the end of every month or given time period.</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="row text-center">
+		<form class="form-group" method="post"
+			th:action="@{/headcount/semreset}">
+			<div class="col-xs-4 form-inline">
+
+				<div class="form-group">
+					<label for="dateString"> Start date:</label>
+				</div>
+				<div class="form-group">
+					<div class="input-group date" id='datetimepicker4'>
+						<input type='text' class="form-control"
+							th:value="${startDateString}" name="startDateString"
+							id="startDateString" required="required" /> <span
+							class="input-group-addon"><i class="fa fa-calendar"
+							aria-hidden="true"></i></span>
+
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<div class="col-xs-4 form-inline">
+				<div class="form-group">
+					<label for="dateString"> End date:</label>
+				</div>
+				<div class="form-group">
+					<div class="input-group date" id='datetimepicker5'>
+						<input type='text' class="form-control"
+							th:value="${endDateString}" name="endDateString"
+							id="endDateString" required="required" /> <span
+							class="input-group-addon"><i class="fa fa-calendar"
+							aria-hidden="true"></i></span>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4 form-inline">
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+
+		<div class="row">
+
+			<div class="col-xs-4"></div>
+			<div class="col-xs-3 form-group">
+				<h1 class="page-header">Search result</h1>
+			</div>
+		</div>
+
+
+
+		<div class="row" th:if="${recordcount != null }">
+
+			<div class="col-xs-4"></div>
+			<div class="col-xs-3">
+				<p style="font-size: 25px;">
+					[[${recordcount}]] <small> (records found) </small>
+				</p>
+
+			</div>
+
+		</div>
+
+		<form method="post" id="reportDownloadForm"
+			th:if="${recordcount != null && recordcount > 0 }"
+			th:action="@{/headcount/downloadtraffic}">
+
+			<div class="row">
+
+				<div class="col-xs-4"></div>
+				<div class="col-xs-3">
+					<button type="submit" id="downloadReportButton"
+						class="btn btn-success btn-md btn-block" name="action"
+						value="download">Download records</button>
+				</div>
+
+			</div>
+		</form>
+
+		<div class="space"></div>
+
+		<form method="post" id="reportDownloadForm"
+			th:if="${recordcount != null && recordcount > 0 }"
+			th:action="@{/headcount/deletetraffic}">
+
+			<div class="row">
+				<div class="col-xs-4"></div>
+				<div class="col-xs-3">
+					<button type="submit" id="downloadReportButton"
+						class="btn btn-danger btn-md btn-block" name="action"
+						value="delete">Delete records</button>
+				</div>
+			</div>
+		</form>
+
+
+	</div>
+
+</div>
+
+
+<div th:replace="common/header :: body-bottom-scripts"></div>
+</body>
+</html>
