@@ -3,6 +3,7 @@ package com.okstatelibrary.doortrafficcounter.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,21 +13,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.okstatelibrary.doortrafficcounter.entity.HeadCountReport;
 import com.okstatelibrary.doortrafficcounter.entity.HeadCountStat;
 import com.okstatelibrary.doortrafficcounter.entity.User;
 import com.okstatelibrary.doortrafficcounter.service.HeadCountService;
 import com.okstatelibrary.doortrafficcounter.service.HeadCountStatService;
+import com.okstatelibrary.doortrafficcounter.service.ReportService;
 import com.okstatelibrary.doortrafficcounter.service.UserService;
 import com.okstatelibrary.doortrafficcounter.util.DateUtil;
 import com.okstatelibrary.doortrafficcounter.util.ExcelGenerator;
@@ -50,30 +55,48 @@ public class HeadCountController {
 	private HeadCountStatService headCountStatService;
 
 	@Autowired
+	private ReportService reportService;
+
+	@Autowired
 	private HeadCountService headCountService;
 
-	/**
-	 * Staticics
-	 * 
-	 * @param dateString
-	 * @param model
-	 * @param principal
-	 * @return
-	 * @throws ParseException
-	 */
-	@RequestMapping("/stat")
-	public String stat(@ModelAttribute("dateString") String dateString, Model model, Principal principal)
-			throws ParseException {
+	@Lazy
+	@RequestMapping(value = "/report", method = RequestMethod.GET)
+	public @ResponseBody List<HeadCountReport> browseData(@RequestParam(required = false) String start_date,
+			@RequestParam(required = false) String end_date, Model model, HttpServletRequest request)
+			throws JsonProcessingException {
 
-		StatDataModel statListParams = getStatDataModel(dateString);
+		List<HeadCountReport> list = new ArrayList<HeadCountReport>();
+
+		System.out.println("start_date" + start_date);
+		System.out.println("end_date" + end_date);
+
+		if (start_date.isEmpty() || start_date == null) {
+			start_date = DateUtil.get7DaysBeforeTodayDate();
+		}
+
+		if (end_date.isEmpty() || end_date == null) {
+			end_date = DateUtil.getTodayDate().toString();
+		}
+
+		System.out.println("start_date" + start_date);
+		System.out.println("end_date" + end_date);
+
+		List<Object[]> listObject = reportService.getStatByDateRange(start_date, end_date);
+
+		for (Object[] element : listObject) {
+			list.add(new HeadCountReport(element));
+		}
+
+		return list;
+	}
+
+	@RequestMapping("/stat")
+	public String stat(Model model, Principal principal) throws ParseException {
 
 		User user = userService.findByUsername(principal.getName());
+
 		model.addAttribute("user", user);
-
-		model.addAttribute("statList", statListParams.StatList);
-		model.addAttribute("dateString", statListParams.DateString);
-
-		setupTotalCount(statListParams.StatList, model);
 
 		return "stat";
 	}
@@ -209,12 +232,16 @@ public class HeadCountController {
 	public String barGraph(@ModelAttribute("dateString") String dateString, Model model, Principal principal)
 			throws ParseException {
 
+		if (dateString.isEmpty() || dateString == null) {
+			dateString = DateUtil.getTodayDate().toString();
+		}
+
 		GraphDataModel getGraphDataModel = getGraphDataModel(dateString);
 
 		User user = userService.findByUsername(principal.getName());
 
 		model.addAttribute("user", user);
-		model.addAttribute("dateString", getGraphDataModel.StatDataModel.DateString);
+		model.addAttribute("dateString", dateString);
 
 		model.addAttribute("categories", getGraphDataModel.Categories);
 		model.addAttribute("liveCountMap", getGraphDataModel.LiveCountMap);
@@ -222,45 +249,16 @@ public class HeadCountController {
 		model.addAttribute("enterMap", getGraphDataModel.EntryMap);
 		model.addAttribute("exitMap", getGraphDataModel.ExitMap);
 
-		setupTotalCount(getGraphDataModel.StatDataModel.StatList, model);
+		// setupTotalCount(getGraphDataModel.StatDataModel.StatList, model);
 
 		return "bargraph";
-	}
-
-	@GetMapping(value = "/stat_excel")
-	public ResponseEntity<InputStreamResource> excelStatReport(@ModelAttribute("dateString") String dateString,
-			Model model) throws IOException {
-
-		StatDataModel statListParams = getStatDataModel(dateString);
-
-		ByteArrayInputStream in = ExcelGenerator.statDataToExcel(statListParams.StatList);
-
-		HttpHeaders headers = new HttpHeaders();
-
-		headers.add("Content-Disposition", "attachment; filename=" + dateString + "_movements.xlsx");
-
-		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
-	}
-
-	@GetMapping(value = "/graph_excel")
-	public ResponseEntity<InputStreamResource> excelGraphReport(@ModelAttribute("dateString") String dateString,
-			Model model) throws IOException {
-
-		GraphDataModel getGraphDataModel = getGraphDataModel(dateString);
-
-		ByteArrayInputStream in = ExcelGenerator.GraphDataToExcel(getGraphDataModel);
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "attachment; filename=" + dateString + "_time_movements.xlsx");
-
-		return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
 	}
 
 	private GraphDataModel getGraphDataModel(String dateString) {
 
 		GraphDataModel graphDataModel = new GraphDataModel();
 
-		StatDataModel statDataModel = getStatDataModel(dateString);
+		List<Object[]> listObject = reportService.getStatByDate(dateString);
 
 		Map<Integer, Integer> liveCountMap = new LinkedHashMap<>();
 		Map<Integer, Integer> entryMap = new LinkedHashMap<>();
@@ -269,63 +267,27 @@ public class HeadCountController {
 
 		for (int i = 0; i < 24; i++) {
 
-			if (statDataModel.IsToday && DateUtil.getCurrentHour() < i) {
-				break;
-			}
-
 			liveCountMap.put(i, 0);
 			entryMap.put(i, 0);
 			exitMap.put(i, 0);
 			resetMap.put(i, 0);
 		}
 
-		boolean initialLiveCountGot = false;
-		Integer initialLiveCount = 0;
+		for (Object[] element : listObject) {
 
-		if (statDataModel.StatList != null && statDataModel.StatList.size() > 0) {
+			int key = Integer.parseInt(element[0].toString());
 
-			for (HeadCountStat headCountStat : statDataModel.StatList) {
+			String livecount = element[1] == null ? "1" : element[1].toString();
+			liveCountMap.replace(key, Integer.parseInt(livecount));
 
-				if (!initialLiveCountGot) {
-					initialLiveCount = headCountStat.getLiveCount();
-					initialLiveCountGot = true;
-				}
+			String in = element[2] == null ? "0" : element[2].toString();
+			entryMap.replace(key, Integer.parseInt(in));
 
-				@SuppressWarnings("deprecation")
-				Integer key = headCountStat.getDate().getHours();
-				Integer count = headCountStat.getCount();
-
-				if (headCountStat.isReset()) {
-					resetMap.put(key, resetMap.get(key) + 1);
-				} else {
-					if (headCountStat.isEntry()) {
-						entryMap.put(key, entryMap.get(key) + count);
-					} else {
-						exitMap.put(key, exitMap.get(key) + count);
-					}
-				}
-			}
+			String out = element[3] == null ? "0" : element[3].toString();
+			exitMap.replace(key, Integer.parseInt(out));
 		}
 
-		for (int i = 0; i < 24; i++) {
-
-			if (statDataModel.IsToday && DateUtil.getCurrentHour() < i) {
-				break;
-			}
-
-			if (entryMap.get(i) > 0 || exitMap.get(i) > 0) {
-				liveCountMap.put(i, initialLiveCount);
-				initialLiveCount = initialLiveCount + (entryMap.get(i) - exitMap.get(i));
-			} else {
-				liveCountMap.put(i, initialLiveCount);
-			}
-
-			if (resetMap.get(i) > 0) {
-				initialLiveCount = 0;
-			}
-		}
-
-		graphDataModel.StatDataModel = statDataModel;
+		// graphDataModel.StatDataModel = statDataModel;
 		graphDataModel.LiveCountMap = liveCountMap;
 		graphDataModel.ResetMap = resetMap;
 		graphDataModel.EntryMap = entryMap;

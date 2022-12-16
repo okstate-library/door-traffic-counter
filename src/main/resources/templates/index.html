@@ -134,6 +134,8 @@
 		});
 
 	});
+
+	
 </script>
 
 <body roleId="page-top" data-spy="scroll"
@@ -242,6 +244,51 @@
 <div th:replace="common/footer :: footer"></div>
 
 <div th:replace="common/header :: body-bottom-scripts" />
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+
+	var userObj = /*[[${user}]]*/'default';
+	
+	if (userObj != null) {
+
+		var keyCodes = {
+			up : 38,
+			down : 40
+		};
+
+		$(window).keydown(function(e) {
+			switch (e.keyCode) {
+			case keyCodes.up:
+				$.ajax({
+					type : 'POST',
+					url : '/headcount/enter',
+					data : {
+						count : "1"
+					},
+					success : function(result) {
+						getValue();
+					}
+				});
+				return;
+			case keyCodes.down:
+				$.ajax({
+					type : 'POST',
+					url : '/headcount/exit',
+					data : {
+						count : "1"
+					},
+					success : function(result) {
+						getValue();
+					}
+				});
+				return;
+			}
+		});
+	}
+	
+	/*]]>*/
+</script>
 
 </body>
 </html>

@@ -19,13 +19,13 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h3 class="modal-title" id="exampleModalLabel">Users -
-							Help</h3>
+						<h3 class="modal-title" id="exampleModalLabel">Users - Help</h3>
 					</div>
 					<div class="modal-body">
 
 						<ul>
-							<li>Displays list of system users. Only administrators can view or modify.</li>
+							<li>Displays list of system users. Only administrators can
+								view or modify.</li>
 						</ul>
 					</div>
 
@@ -59,9 +59,10 @@
 			</table>
 		</div>
 	</div>
+	<div th:replace="common/footer :: footer"></div>
 </div>
 
-<div th:replace="common/header :: body-bottom-scripts" />
+<div th:replace="common/header :: body-bottom-scripts"></div>
 <script>
 	$(document).ready(function() {
 		$('#example').DataTable();

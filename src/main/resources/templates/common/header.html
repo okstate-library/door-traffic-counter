@@ -55,15 +55,15 @@
 	<![endif]-->
 
 <script>
-setTimeout(function() {
+	setTimeout(function() {
 
-	var element = document.getElementById('message-box');
+		var element = document.getElementById('message-box');
 
-	if (element != null) {
-		element.className = 'hide';
-	}
+		if (element != null) {
+			element.className = 'hide';
+		}
 
-}, 2500);
+	}, 2500);
 
 	/* setTimeout(function() {
 		document.getElementById('aap').className = 'waa';
@@ -111,9 +111,10 @@ setTimeout(function() {
 								<span class="caret"></span>
 						</a>
 							<ul class="dropdown-menu">
-								<li><a th:href="@{/headcount/stat}">Daily statistics</a></li>
-								<li><a th:href="@{/headcount/bargraph}">Daily
-										statistics(graphical)</a></li>
+								<li><a th:href="@{/headcount/stat}">Date Range
+										Statistics</a></li>
+								<li><a th:href="@{/headcount/bargraph}">Graphical
+										Statistics</a></li>
 							</ul></li>
 
 						<li th:if="${user != null && user.roleId == 1}" class="dropdown"><a
@@ -152,10 +153,13 @@ setTimeout(function() {
 			<!-- /.container -->
 		</nav>
 
-		<div id="message-box" class="p-3 mb-2 bg-success text-white show" th:if="${errorMessage}">
+		<div id="message-box" class="p-3 mb-2 bg-success text-white show"
+			th:if="${errorMessage}">
 			<h1 class="text-center" th:text="${errorMessage}"></h1>
 		</div>
 
+		<!-- loading wheel-->
+		<div id="loader" class="lds-dual-ring hidden overlay"></div>
 	</div>
 
 
@@ -178,6 +182,33 @@ setTimeout(function() {
 		<!--data table-->
 		<script src="/js/jquery.dataTables.min.js"></script>
 		<script src="/js/dataTables.bootstrap.min.js"></script>
+
+		<script
+			src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+
+		<script
+			src="https://cdn.datatables.net/select/1.3.3/js/dataTables.select.min.js"></script>
+
+		<!-- <script
+			src="https://cdn.datatables.net/searchpanes/1.2.1/js/dataTables.searchPanes.min.js"></script>
+
+		<script
+			src="https://cdn.datatables.net/select/1.3.2/js/dataTables.select.min.js"></script> -->
+
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+		<script
+			src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
 		<!--main js-->
 		<script src="/js/main.js"></script>

@@ -52,7 +52,7 @@
 					<label for="dateString"> Start date:</label>
 				</div>
 				<div class="form-group">
-					<div class="input-group date" id='datetimepicker4'>
+					<div class="input-group date" id='datetimepicker_start_date'>
 						<input type='text' class="form-control"
 							th:value="${startDateString}" name="startDateString"
 							id="startDateString" required="required" /> <span
@@ -71,7 +71,7 @@
 					<label for="dateString"> End date:</label>
 				</div>
 				<div class="form-group">
-					<div class="input-group date" id='datetimepicker5'>
+					<div class="input-group date" id='datetimepicker_end_date'>
 						<input type='text' class="form-control"
 							th:value="${endDateString}" name="endDateString"
 							id="endDateString" required="required" /> <span
@@ -142,6 +142,8 @@
 
 
 	</div>
+	
+	<div th:replace="common/footer :: footer"></div>
 
 </div>
 

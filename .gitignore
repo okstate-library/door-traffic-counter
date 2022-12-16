@@ -40,3 +40,10 @@ hs_err_pid*
 .mvn/*
 src/.DS_Store
 src/main/resources/.DS_Store
+src/main/resources/21_22_library_wildcard.jks
+src/main/resources/application-prod.properties
+src/main/resources/application-prod.properties
+*.properties
+src/main/resources/application-prod.properties
+src/main/resources/22_23_library_wildcard.jks
+src/main/resources/application-prod.properties
