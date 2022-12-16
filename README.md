@@ -45,7 +45,15 @@ mvn clean spring-boot:run
 
 ### Statistics Graph Page   
 
-![Statistics Graph  page](images/statistics_graph_page.png "Statistics Graph Page")
+![Statistics Graph page](images/statistics_graph_page.png "Statistics Graph Page")
+
+### Reset Page   
+
+![Reset Page](images/count_reset_page.png "Daily count reset page")
+
+### Semester count reset page
+
+![Semester count reset page](images/semester_count_reset_page.png "Semester count reset page")
 
 ## Build application and run on a live environment.
 
