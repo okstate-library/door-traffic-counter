@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -156,6 +157,13 @@ public class HeadCountController {
 			Date endDate = DateUtil.getLongDate(endDateString);
 
 			List<HeadCountStat> list = headCountStatService.findAll(startDate, endDate);
+
+			CompletableFuture<List<HeadCountStat>> list1 = headCountStatService.findAllAsync(startDate, endDate);
+			CompletableFuture<List<HeadCountStat>> list2 = headCountStatService.findAllAsync(startDate, endDate);
+			CompletableFuture<List<HeadCountStat>> list3 = headCountStatService.findAllAsync(startDate, endDate);
+			CompletableFuture<List<HeadCountStat>> list4 = headCountStatService.findAllAsync(startDate, endDate);
+
+			CompletableFuture.allOf(list1, list2, list3, list4).join();
 
 			ByteArrayInputStream in = ExcelGenerator.statDataToExcel(list);
 

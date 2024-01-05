@@ -2,6 +2,7 @@ package com.okstatelibrary.doortrafficcounter.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -17,15 +18,15 @@ import com.okstatelibrary.doortrafficcounter.util.DateUtil;
 @Service
 public class HeadCountStatServiceImpl implements HeadCountStatService {
 
-    @Autowired
-    private HeadCountStatDao headCountStatDao;
+	@Autowired
+	private HeadCountStatDao headCountStatDao;
 
 	@Override
 	public List<HeadCountStat> findByDate(Date date) {
-	
+
 		return (List<HeadCountStat>) headCountStatDao.findAll().stream()
-				.filter(u -> DateUtil.getDateFormat().format( u.getDate())
-						.equals(DateUtil.getDateFormat().format(date))).collect(Collectors.toList());
+				.filter(u -> DateUtil.getDateFormat().format(u.getDate()).equals(DateUtil.getDateFormat().format(date)))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -47,7 +48,15 @@ public class HeadCountStatServiceImpl implements HeadCountStatService {
 	@Transactional
 	@Override
 	public void deleteAll(Date startDate, Date endDate) {
-		headCountStatDao.deleteAll(startDate, endDate);		
+		headCountStatDao.deleteAll(startDate, endDate);
 	}
-	
+
+	@Override
+	public CompletableFuture<List<HeadCountStat>> findAllAsync(Date startDate, Date endDate) {
+
+		List<HeadCountStat> list = headCountStatDao.findByDates(startDate, endDate);
+
+		return CompletableFuture.completedFuture(list);
+	}
+
 }
