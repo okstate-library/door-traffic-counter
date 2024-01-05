@@ -47,3 +47,5 @@ src/main/resources/application-prod.properties
 src/main/resources/application-prod.properties
 src/main/resources/22_23_library_wildcard.jks
 src/main/resources/application-prod.properties
+src/.DS_Store
+src/main/resources/23_24_library_wildcard.jks
